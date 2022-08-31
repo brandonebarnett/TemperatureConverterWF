@@ -20,40 +20,66 @@ namespace TemperatureConverter
 
         private void convertButton_Click(object sender, EventArgs e)
         {
-            if (measureFromCB.SelectedItem.ToString() == "Celsius °C" && measureToCB.SelectedItem.ToString() == "Fahrenheit °F")
+            if (measureFromCB.SelectedItem != null || measureToCB.SelectedItem != null)
             {
-                errorLabel.Visible = false;
-                conversionTextBox.Text = Convert.ToString(CelsiusToFahrenheit());
-            }
-            else if (measureFromCB.SelectedItem.ToString() == "Celsius °C" && measureToCB.SelectedItem.ToString() == "Kelvin °K")
-            {
-                errorLabel.Visible = false;
-                conversionTextBox.Text = Convert.ToString(CelsiusToKelvin());
-            }
-            else if (measureFromCB.SelectedItem.ToString() == "Fahrenheit °F" && measureToCB.SelectedItem.ToString() == "Celsius °C")
-            {
-                errorLabel.Visible = false;
-                conversionTextBox.Text = Convert.ToString(FahrenheitToCelsius());
-            }
-            else if (measureFromCB.SelectedItem.ToString() == "Fahrenheit °F" && measureToCB.SelectedItem.ToString() == "Kelvin °K")
-            {
-                errorLabel.Visible = false;
-                conversionTextBox.Text = Convert.ToString(FahrenheitToKelvin());
-            }
-            else if (measureFromCB.SelectedItem.ToString() == "Kelvin °K" && measureToCB.SelectedItem.ToString() == "Celsius °C")
-            {
-                errorLabel.Visible = false;
-                conversionTextBox.Text = Convert.ToString(KelvinToCelsius());
-            }
-            else if (measureFromCB.SelectedItem.ToString() == "Kelvin °K" && measureToCB.SelectedItem.ToString() == "Fahrenheit °F")
-            {
-                errorLabel.Visible = false;
-                conversionTextBox.Text = Convert.ToString(KelvinToFahrenheit());
+                ConversionDecision();
             }
             else
             {
                 errorLabel.Visible = true;
             }
+        }
+
+        private void ConversionDecision()
+        {
+            if (CheckValidEntry())
+            {
+                if (measureFromCB.SelectedItem.ToString() == "Celsius °C" && measureToCB.SelectedItem.ToString() == "Fahrenheit °F")
+                {
+                    errorLabel.Visible = false;
+                    conversionTextBox.Text = Convert.ToString(CelsiusToFahrenheit());
+                }
+                else if (measureFromCB.SelectedItem.ToString() == "Celsius °C" && measureToCB.SelectedItem.ToString() == "Kelvin °K")
+                {
+                    errorLabel.Visible = false;
+                    conversionTextBox.Text = Convert.ToString(CelsiusToKelvin());
+                }
+                else if (measureFromCB.SelectedItem.ToString() == "Fahrenheit °F" && measureToCB.SelectedItem.ToString() == "Celsius °C")
+                {
+                    errorLabel.Visible = false;
+                    conversionTextBox.Text = Convert.ToString(FahrenheitToCelsius());
+                }
+                else if (measureFromCB.SelectedItem.ToString() == "Fahrenheit °F" && measureToCB.SelectedItem.ToString() == "Kelvin °K")
+                {
+                    errorLabel.Visible = false;
+                    conversionTextBox.Text = Convert.ToString(FahrenheitToKelvin());
+                }
+                else if (measureFromCB.SelectedItem.ToString() == "Kelvin °K" && measureToCB.SelectedItem.ToString() == "Celsius °C")
+                {
+                    errorLabel.Visible = false;
+                    conversionTextBox.Text = Convert.ToString(KelvinToCelsius());
+                }
+                else if (measureFromCB.SelectedItem.ToString() == "Kelvin °K" && measureToCB.SelectedItem.ToString() == "Fahrenheit °F")
+                {
+                    errorLabel.Visible = false;
+                    conversionTextBox.Text = Convert.ToString(KelvinToFahrenheit());
+                }
+                else
+                {
+                    errorLabel.Visible = true;
+                }
+            }
+            else
+            {
+                errorLabel.Text = "The value entered is not convertable.  Please try again.";
+                errorLabel.Visible = true;
+            }
+        }
+
+        private bool CheckValidEntry()
+        {
+            bool isValid = double.TryParse(valueTextBox.Text, out _);
+            return isValid;
         }
 
         private double KelvinToFahrenheit()
@@ -93,7 +119,7 @@ namespace TemperatureConverter
 
         private double CelsiusToFahrenheit()
         {
-            double fahrenheit = (Convert.ToInt32(valueTextBox.Text) * 1.8) + 32;
+            double fahrenheit = (Convert.ToInt32(valueTextBox.Text) * ((double)5 / (double)9)) + 32;
             return fahrenheit;
         }
 
